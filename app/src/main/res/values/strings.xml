@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Cryptomaniac</string>
+    <string name="toolbar_text">Список криптовалют</string>
+    <string name="usd_chip">USD</string>
+    <string name="eur_chip">EUR</string>
+    <string name="text_error">Случилась какая-то ошибка :( \nПопробуем снова?</string>
+    <string name="button_error">Попробовать</string>
+    <string name="description">Описание</string>
+    <string name="categories">Категории</string>
+</resources>
