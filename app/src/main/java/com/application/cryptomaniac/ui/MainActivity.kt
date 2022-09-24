@@ -4,7 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.application.cryptomaniac.R
-import com.application.cryptomaniac.ui.fragments.CryptoList
+import com.application.cryptomaniac.ui.fragments.CryptoListFragment
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,9 +13,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
+
     override fun onResume() {
         super.onResume()
-        openFragment(CryptoList())
+        openFragment(CryptoListFragment())
     }
 
     private fun openFragment(fragment: Fragment) {

@@ -32,13 +32,13 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
-                    app:layout_constraintEnd_toStartOf="@id/toolbar_currency"
+                    app:layout_constraintEnd_toStartOf="@id/crypto_name_toolbar"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/arrow_back" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/toolbar_currency"
+                    android:id="@+id/crypto_name_toolbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="36dp"

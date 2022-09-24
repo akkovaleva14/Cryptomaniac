@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.application.cryptomaniac.R
 
-class CryptoDetails : Fragment() {
+class CryptoDetailsFragment : BaseFragment() {
 
 
     override fun onCreateView(
