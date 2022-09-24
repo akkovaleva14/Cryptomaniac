@@ -17,7 +17,6 @@ class CryptoHolder(private val binding: ItemCryptoBinding) :
             val binding = ItemCryptoBinding.inflate(inflater, parent, false)
             return CryptoHolder(binding)
         }
-
     }
 
     fun bind(crypto: Crypto?, clickListener: CryptoAdapter.CryptoClickListener) {

@@ -8,7 +8,7 @@ import com.application.cryptomaniac.data.model.Crypto
 class CryptoAdapter(val clickListener: CryptoClickListener) :
     RecyclerView.Adapter<CryptoHolder>() {
 
-    private var data = listOf<Crypto?>()
+    var data = listOf<Crypto?>()
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
