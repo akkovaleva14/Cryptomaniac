@@ -35,8 +35,6 @@ class RetrofitClient {
                 api = retrofit.create(ApiService::class.java)
             }
             return api!!
-
-
         }
     }
 }

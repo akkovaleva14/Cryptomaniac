@@ -7,4 +7,5 @@
     <string name="button_error">Попробовать</string>
     <string name="description">Описание</string>
     <string name="categories">Категории</string>
+    <!--<string name="crypto_price_change_percentage">%.2f</string>-->
 </resources>

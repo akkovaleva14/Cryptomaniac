@@ -1,22 +1,28 @@
-package com.application.cryptomaniac
+package com.application.cryptomaniac.ui.cryptomain
 
 import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.*
+import com.application.cryptomaniac.CryptoRepository
+import com.application.cryptomaniac.NetworkState
 import com.application.cryptomaniac.data.model.Crypto
 import com.application.cryptomaniac.utils.Currency.EUR
 import com.application.cryptomaniac.utils.Currency.USD
 import kotlinx.coroutines.launch
 import java.util.*
 
-class CryptoViewModel(val cryptoRepository: CryptoRepository?) : ViewModel() {
+class CryptoMainViewModel(val cryptoRepository: CryptoRepository?) : ViewModel() {
+
     private val _cryptoList = MutableLiveData<List<Crypto?>?>()
     val cryptoList: LiveData<List<Crypto?>?> = _cryptoList
-
     val isUsd = ObservableBoolean(true)
+
+
+
 
     fun getCurrentList() {
         val type = if (isUsd.get()) USD.name else EUR.name
+
         viewModelScope.launch {
             cryptoRepository?.let {
                 when (val listUsd =
@@ -31,14 +37,16 @@ class CryptoViewModel(val cryptoRepository: CryptoRepository?) : ViewModel() {
                 }
             }
         }
+
     }
+
 
     companion object {
         fun factory(
             cryptoRepository: CryptoRepository?
         ) = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return CryptoViewModel(cryptoRepository) as T
+                return CryptoMainViewModel(cryptoRepository) as T
             }
         }
     }

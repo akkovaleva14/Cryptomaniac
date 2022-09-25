@@ -1,4 +1,4 @@
-package com.application.cryptomaniac.ui.fragments
+package com.application.cryptomaniac.ui.base
 
 import androidx.fragment.app.Fragment
 import com.application.cryptomaniac.R

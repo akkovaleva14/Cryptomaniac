@@ -19,8 +19,8 @@ class CryptoRepository (val api: ApiService) {
         }
     }
 
-    suspend fun getDescAndCategories(id: String): NetworkState<List<CryptoDescAndCategories>> {
-        val response = api.getDescAndCategories(id)
+    suspend fun getDescAndCategories(id: String): NetworkState<CryptoDescAndCategories> {
+        val response = api.getDescAndCategories(id = id)
         return if (response.isSuccessful) {
             val responseBody = response.body()
             if (responseBody != null) {

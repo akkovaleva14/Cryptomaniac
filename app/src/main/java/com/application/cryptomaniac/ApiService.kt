@@ -18,8 +18,8 @@ interface ApiService {
         @Query("sparkline") sparkline: Boolean = false
     ): Response<List<Crypto>>
 
-    @GET("/coins/{id}")
+    @GET("/api/v3/coins/{id}")
     suspend fun getDescAndCategories(
         @Path(value = "id") id: String
-    ): Response<List<CryptoDescAndCategories>>
+    ): Response<CryptoDescAndCategories>
 }

@@ -7,11 +7,12 @@ import com.application.cryptomaniac.ApiService
 import com.application.cryptomaniac.CryptoRepository
 import com.application.cryptomaniac.R
 import com.application.cryptomaniac.RetrofitClient
-import com.application.cryptomaniac.ui.fragments.CryptoListFragment
+import com.application.cryptomaniac.ui.cryptomain.CryptoListFragment
 
 
 class MainActivity : AppCompatActivity() {
     var apiService: ApiService? = null
+  //  var itemId = "bitcoin"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

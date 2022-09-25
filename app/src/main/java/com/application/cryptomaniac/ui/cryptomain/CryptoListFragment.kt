@@ -1,24 +1,26 @@
-package com.application.cryptomaniac.ui.fragments
+package com.application.cryptomaniac.ui.cryptomain
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import com.application.cryptomaniac.CryptoViewModel
 import com.application.cryptomaniac.R
 import com.application.cryptomaniac.data.model.Crypto
 import com.application.cryptomaniac.databinding.FragmentListCryptoBinding
-import com.application.cryptomaniac.ui.CryptoAdapter
 import com.application.cryptomaniac.ui.MainActivity
+import com.application.cryptomaniac.ui.base.BaseFragment
+import com.application.cryptomaniac.ui.cryptodetails.CryptoDetailsFragment
+import com.application.cryptomaniac.ui.cryptomain.cryptoadapter.CryptoAdapter
 
 class CryptoListFragment : BaseFragment() {
 
     private var binding: FragmentListCryptoBinding? = null
     private var cryptoAdapter: CryptoAdapter? = null
+    private lateinit var viewModel: CryptoMainViewModel
 
-    private lateinit var viewModel: CryptoViewModel
-
+    var eurIsSelected: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,8 +28,8 @@ class CryptoListFragment : BaseFragment() {
     ): View {
         viewModel = ViewModelProvider(
             this,
-            CryptoViewModel.factory((activity as? MainActivity)?.getRepository())
-        )[CryptoViewModel::class.java]
+            CryptoMainViewModel.factory((activity as? MainActivity)?.getRepository())
+        )[CryptoMainViewModel::class.java]
 
         binding = FragmentListCryptoBinding.inflate(inflater, container, false)
         initAdapter()
@@ -42,21 +44,27 @@ class CryptoListFragment : BaseFragment() {
         viewModel.cryptoList.observe(
             viewLifecycleOwner
         ) { list ->
+            binding?.progressLoader?.isVisible = list.isNullOrEmpty()
             list?.let {
                 cryptoAdapter?.data = list
             }
         }
-
         changeSelectedState()
 
-
+        /*if(!eurIsSelected){
+            viewModel.getCurrentList()
+            binding?.progressLoader?.visibility = View.GONE
+        } else {
+            changeSelectedState()
+            binding?.progressLoader?.visibility = View.GONE
+        }*/
     }
 
     private fun initAdapter() {
         cryptoAdapter = CryptoAdapter(
             object : CryptoAdapter.CryptoClickListener {
                 override fun onItemClick(item: Crypto?) {
-                    replaceFragment(CryptoDetailsFragment())
+                    replaceFragment(CryptoDetailsFragment.newInstance(item?.id))
                 }
             }
         )
@@ -71,7 +79,8 @@ class CryptoListFragment : BaseFragment() {
             binding?.eurChip?.isSelected = true
             binding?.eurChip?.setChipBackgroundColorResource(R.color.antique_white)
             binding?.usdChip?.setChipBackgroundColorResource(R.color.platinum)
-            binding?.eurChip?.isSelected?.let { selected -> viewModel.isUsd.set(selected) }
+            binding?.eurChip?.isSelected?.let { selected -> viewModel.isUsd.set(!selected) }
+            eurIsSelected = true
             viewModel.getCurrentList()
         }
 
@@ -81,6 +90,7 @@ class CryptoListFragment : BaseFragment() {
             binding?.eurChip?.setChipBackgroundColorResource(R.color.platinum)
             binding?.usdChip?.setChipBackgroundColorResource(R.color.antique_white)
             binding?.usdChip?.isSelected?.let { selected -> viewModel.isUsd.set(selected) }
+            eurIsSelected = false
             viewModel.getCurrentList()
         }
 

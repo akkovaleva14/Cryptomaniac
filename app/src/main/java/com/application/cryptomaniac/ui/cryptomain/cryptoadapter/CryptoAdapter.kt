@@ -1,4 +1,4 @@
-package com.application.cryptomaniac.ui
+package com.application.cryptomaniac.ui.cryptomain.cryptoadapter
 
 import android.annotation.SuppressLint
 import android.view.ViewGroup
