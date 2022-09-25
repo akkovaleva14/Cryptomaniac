@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.*
 import com.application.cryptomaniac.CryptoRepository
-import com.application.cryptomaniac.NetworkState
 import com.application.cryptomaniac.data.model.Crypto
+import com.application.cryptomaniac.network.NetworkState
 import com.application.cryptomaniac.utils.Currency.EUR
 import com.application.cryptomaniac.utils.Currency.USD
 import kotlinx.coroutines.launch
@@ -18,13 +18,18 @@ class CryptoMainViewModel(val cryptoRepository: CryptoRepository?) : ViewModel()
     val isUsd = ObservableBoolean(true)
 
 
-
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
 
     fun getCurrentList() {
         val type = if (isUsd.get()) USD.name else EUR.name
 
         viewModelScope.launch {
             cryptoRepository?.let {
+                _isLoading.value = true
+
+                cryptoRepository
+                    .getUsdOrEur(type.lowercase(Locale.getDefault()))
                 when (val listUsd =
                     cryptoRepository.getUsdOrEur(type.lowercase(Locale.getDefault()))) {
                     is NetworkState.Success -> {
@@ -35,6 +40,8 @@ class CryptoMainViewModel(val cryptoRepository: CryptoRepository?) : ViewModel()
                         Log.e("ERROR", "NetworkState error")
                     }
                 }
+
+                _isLoading.value = false
             }
         }
 

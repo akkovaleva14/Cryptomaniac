@@ -1,4 +1,4 @@
-package com.application.cryptomaniac
+package com.application.cryptomaniac.network
 
 import retrofit2.Response
 

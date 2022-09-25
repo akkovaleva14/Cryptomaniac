@@ -1,4 +1,4 @@
-package com.application.cryptomaniac
+package com.application.cryptomaniac.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi

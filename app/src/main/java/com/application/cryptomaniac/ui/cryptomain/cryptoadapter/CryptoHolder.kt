@@ -1,13 +1,15 @@
 package com.application.cryptomaniac.ui.cryptomain.cryptoadapter
 
-import android.text.TextUtils.indexOf
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.application.cryptomaniac.R
 import com.application.cryptomaniac.data.model.Crypto
 import com.application.cryptomaniac.databinding.ItemCryptoBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import java.math.BigDecimal
 import java.util.*
 
 class CryptoHolder(private val binding: ItemCryptoBinding) :
@@ -21,25 +23,20 @@ class CryptoHolder(private val binding: ItemCryptoBinding) :
         }
     }
 
-    fun bind(crypto: Crypto?, clickListener: CryptoAdapter.CryptoClickListener) {
+    fun bind(crypto: Crypto?, clickListener: CryptoAdapter.CryptoClickListener, isUsd: Boolean) {
 
         Glide
             .with(binding.cryptoImage)
             .load(crypto?.image)
             .apply(RequestOptions.circleCropTransform())
             .into(binding.cryptoImage)
-
+        val currencySymbol =
+            if (isUsd) "" else "" // вписать доллар и евро
         binding.cryptoSymbol.text = crypto?.symbol.toString().uppercase(Locale.ROOT)
         binding.cryptoName.text = crypto?.name
-        binding.cryptoCurrentPrice.text = crypto?.currentPrice.toString()
+        binding.cryptoCurrentPrice.text = currencySymbol.toString()
+            .plus(crypto?.currentPrice?.let { roundToTwoZero(it) }.toString())
 
-        /* .format("%.2f") не работает */
-
-        binding.cryptoPriceChangePercentage.text =
-            crypto?.priceChangePercentage24h
-                .toString()
-                .substring(0, indexOf((crypto?.priceChangePercentage24h.toString()), '.') + 3)
-                .plus("%")
 
 
         /* binding.cryptoPriceChangePercentage.text =
@@ -54,18 +51,34 @@ class CryptoHolder(private val binding: ItemCryptoBinding) :
 
 
         /*binding.cryptoPriceChangePercentage.apply {
-            if(crypto?.priceChangePercentage24h!! > 0) {
-                binding.cryptoPriceChangePercentage.resources.getColor(R.color.jungle_green)
-            } else {
-                binding.cryptoPriceChangePercentage.resources.getColor(R.color.dark_terra_cotta)
-            }
+
         }.text =
             crypto?.priceChangePercentage24h.toString().format("%.2f")*/
+        val isPositive = (crypto?.priceChangePercentage24h ?: 0.0) > 0.0
+        val textColor =
+            if (isPositive) {
+                ContextCompat.getColor(binding.root.context, R.color.jungle_green)
+            } else {
+                ContextCompat.getColor(binding.root.context, R.color.dark_terra_cotta)
+            }
+        binding.cryptoPriceChangePercentage.setTextColor(textColor)
 
+        val symbolPlus = if (isPositive) "+" else ""
+
+        binding.cryptoPriceChangePercentage.text =
+            symbolPlus.plus(crypto?.priceChangePercentage24h?.let { roundToTwoZero(it) }.toString()
+                .plus("%")
+            )
 
         binding.root.setOnClickListener {
             clickListener.onItemClick(crypto)
         }
+
+
+    }
+
+    fun roundToTwoZero(number: Double): Double {
+        return BigDecimal(number).setScale(2, BigDecimal.ROUND_HALF_UP).toDouble()
     }
 }
 

@@ -3,10 +3,10 @@ package com.application.cryptomaniac.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.application.cryptomaniac.ApiService
+import com.application.cryptomaniac.network.ApiService
 import com.application.cryptomaniac.CryptoRepository
 import com.application.cryptomaniac.R
-import com.application.cryptomaniac.RetrofitClient
+import com.application.cryptomaniac.network.RetrofitClient
 import com.application.cryptomaniac.ui.cryptomain.CryptoListFragment
 
 

@@ -21,10 +21,12 @@
             android:layout_marginVertical="16dp"
             android:layout_marginStart="16dp"
             android:background="@color/white"
+            android:clickable="true"
             app:layout_constraintEnd_toStartOf="@id/crypto_name_toolbar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/arrow_back" />
+            app:srcCompat="@drawable/arrow_back"
+            android:focusable="true" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/crypto_name_toolbar"

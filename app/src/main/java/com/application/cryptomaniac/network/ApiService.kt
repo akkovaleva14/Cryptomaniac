@@ -1,4 +1,4 @@
-package com.application.cryptomaniac
+package com.application.cryptomaniac.network
 
 import com.application.cryptomaniac.data.model.Crypto
 import com.application.cryptomaniac.data.model.CryptoDescAndCategories

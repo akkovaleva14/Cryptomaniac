@@ -15,12 +15,19 @@ class CryptoAdapter(val clickListener: CryptoClickListener) :
             notifyDataSetChanged()
         }
 
+    var isUsd = false
+        @SuppressLint("NotifyDataSetChanged")
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CryptoHolder {
         return CryptoHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: CryptoHolder, position: Int) {
-        holder.bind(data[position], clickListener)
+        holder.bind(data[position], clickListener, isUsd)
     }
 
     override fun getItemCount(): Int {

@@ -2,6 +2,8 @@ package com.application.cryptomaniac
 
 import com.application.cryptomaniac.data.model.Crypto
 import com.application.cryptomaniac.data.model.CryptoDescAndCategories
+import com.application.cryptomaniac.network.ApiService
+import com.application.cryptomaniac.network.NetworkState
 
 class CryptoRepository (val api: ApiService) {
 

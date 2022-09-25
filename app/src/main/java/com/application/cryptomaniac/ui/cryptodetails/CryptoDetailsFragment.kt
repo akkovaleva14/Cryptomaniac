@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.application.cryptomaniac.data.model.CryptoDescAndCategories
 import com.application.cryptomaniac.databinding.FragmentDetailsCryptoBinding
@@ -38,7 +39,6 @@ class CryptoDetailsFragment : BaseFragment() {
         }
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,7 +57,9 @@ class CryptoDetailsFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
 
-        binding?.progressLoader?.visibility = View.VISIBLE
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding?.progressLoader?.isVisible = isLoading
+        }
 
         viewModel.cryptoDescAndCategories.observe(
             viewLifecycleOwner

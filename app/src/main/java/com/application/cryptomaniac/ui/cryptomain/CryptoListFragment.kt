@@ -40,24 +40,23 @@ class CryptoListFragment : BaseFragment() {
         super.onResume()
 
         binding?.recyclerView?.adapter = cryptoAdapter
+        viewModel.getCurrentList()
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding?.progressLoader?.isVisible = isLoading
+        }
 
         viewModel.cryptoList.observe(
             viewLifecycleOwner
         ) { list ->
-            binding?.progressLoader?.isVisible = list.isNullOrEmpty()
+
             list?.let {
                 cryptoAdapter?.data = list
+                cryptoAdapter?.isUsd = viewModel.isUsd.get()
             }
         }
         changeSelectedState()
 
-        /*if(!eurIsSelected){
-            viewModel.getCurrentList()
-            binding?.progressLoader?.visibility = View.GONE
-        } else {
-            changeSelectedState()
-            binding?.progressLoader?.visibility = View.GONE
-        }*/
     }
 
     private fun initAdapter() {
