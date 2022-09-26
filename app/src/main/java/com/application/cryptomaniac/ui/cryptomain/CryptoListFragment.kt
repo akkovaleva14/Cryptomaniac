@@ -1,14 +1,15 @@
 package com.application.cryptomaniac.ui.cryptomain
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.transition.Fade
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 import com.application.cryptomaniac.R
 import com.application.cryptomaniac.data.model.Crypto
 import com.application.cryptomaniac.databinding.FragmentListCryptoBinding
@@ -39,7 +40,6 @@ class CryptoListFragment : BaseFragment() {
         return binding!!.root
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
 
@@ -50,13 +50,14 @@ class CryptoListFragment : BaseFragment() {
 
         binding?.recyclerView?.adapter = cryptoAdapter
 
-        cryptoAdapter?.notifyDataSetChanged()
         binding?.swipeRefreshLayout?.setOnRefreshListener {
-            // on below line we are setting is refreshing to false.
-            swipeRefreshLayout?.isRefreshing = false
-            cryptoAdapter?.notifyDataSetChanged()
-            //   viewModel?.getCurrentList()
-            Log.e("refresh", "refreshed or at least tried")
+            if (isOnline(context)) {
+                viewModel?.getCurrentList()
+                toggle(false)
+            } else {
+                toggle(true)
+            }
+            binding?.swipeRefreshLayout?.isRefreshing = false
         }
 
         viewModel?.isLoading?.observe(viewLifecycleOwner) { isLoading ->
@@ -124,6 +125,17 @@ class CryptoListFragment : BaseFragment() {
             binding?.viewLine?.visibility = View.VISIBLE
             binding?.progressLoader?.visibility = View.GONE
         }
+    }
+
+    private fun toggle(show: Boolean) {
+        val transition: Transition = Fade()
+        transition.duration = 600
+        transition.addTarget(binding?.toast as View)
+        TransitionManager.beginDelayedTransition(
+            binding?.root as ViewGroup,
+            transition
+        )
+        binding?.toast?.isVisible = show
     }
 
     override fun onDestroyView() {

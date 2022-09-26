@@ -38,7 +38,7 @@ class CryptoHolder(private val binding: ItemCryptoBinding) :
         binding.cryptoName.text = crypto?.name
 
         binding.cryptoCurrentPrice.text = currencySymbol
-            .plus(crypto?.currentPrice?.let { roundToTwoZero(it) }.toString())
+            .plus(crypto?.currentPrice?.let { getFormattedPrice(it) }.toString())
 
         val isPositive = (crypto?.priceChangePercentage24h ?: 0.0) > 0.0
         val textColor =
@@ -61,8 +61,24 @@ class CryptoHolder(private val binding: ItemCryptoBinding) :
             clickListener.onItemClick(crypto)
         }
     }
+
     private fun roundToTwoZero(number: Double): Double {
         return BigDecimal(number).setScale(2, BigDecimal.ROUND_HALF_UP).toDouble()
+    }
+
+    fun getFormattedPrice(number: Double): String {
+        val roundedNumber = roundToTwoZero(number).toBigDecimal()
+        val stringRoundedNumber = roundedNumber.toString().split(".")
+        val wholePart = stringRoundedNumber[0]
+        val numWholeString = numberToString(wholePart.toInt())
+        val stringWholePart = numWholeString.replace("\\s".toRegex(), ",")
+        val decimalPart = stringRoundedNumber[1]
+
+        return "$stringWholePart.$decimalPart"
+    }
+
+    fun numberToString(value: Int): String {
+        return String.format(Locale("ru", "RU"), "%,d", value)
     }
 }
 
