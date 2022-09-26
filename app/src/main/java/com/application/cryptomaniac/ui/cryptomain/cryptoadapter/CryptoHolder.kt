@@ -30,30 +30,16 @@ class CryptoHolder(private val binding: ItemCryptoBinding) :
             .load(crypto?.image)
             .apply(RequestOptions.circleCropTransform())
             .into(binding.cryptoImage)
+
         val currencySymbol =
-            if (isUsd) "" else "" // вписать доллар и евро
+            if (isUsd) "$" else "€"
         binding.cryptoSymbol.text = crypto?.symbol.toString().uppercase(Locale.ROOT)
+
         binding.cryptoName.text = crypto?.name
-        binding.cryptoCurrentPrice.text = currencySymbol.toString()
+
+        binding.cryptoCurrentPrice.text = currencySymbol
             .plus(crypto?.currentPrice?.let { roundToTwoZero(it) }.toString())
 
-
-
-        /* binding.cryptoPriceChangePercentage.text =
-             crypto?.priceChangePercentage24h.apply {
-                 if (crypto?.priceChangePercentage24h!! > 0) {
-                     binding.cryptoPriceChangePercentage.resources.getColor(R.color.jungle_green)
-                 } else {
-                     binding.cryptoPriceChangePercentage.resources.getColor(R.color.dark_terra_cotta)
-                 }
-             }
-                 .toString().format("%.2f")*/
-
-
-        /*binding.cryptoPriceChangePercentage.apply {
-
-        }.text =
-            crypto?.priceChangePercentage24h.toString().format("%.2f")*/
         val isPositive = (crypto?.priceChangePercentage24h ?: 0.0) > 0.0
         val textColor =
             if (isPositive) {
@@ -66,18 +52,16 @@ class CryptoHolder(private val binding: ItemCryptoBinding) :
         val symbolPlus = if (isPositive) "+" else ""
 
         binding.cryptoPriceChangePercentage.text =
-            symbolPlus.plus(crypto?.priceChangePercentage24h?.let { roundToTwoZero(it) }.toString()
-                .plus("%")
+            symbolPlus.plus(
+                crypto?.priceChangePercentage24h?.let { roundToTwoZero(it) }.toString()
+                    .plus("%")
             )
 
         binding.root.setOnClickListener {
             clickListener.onItemClick(crypto)
         }
-
-
     }
-
-    fun roundToTwoZero(number: Double): Double {
+    private fun roundToTwoZero(number: Double): Double {
         return BigDecimal(number).setScale(2, BigDecimal.ROUND_HALF_UP).toDouble()
     }
 }

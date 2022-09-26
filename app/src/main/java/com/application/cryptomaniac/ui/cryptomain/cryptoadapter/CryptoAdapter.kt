@@ -22,6 +22,10 @@ class CryptoAdapter(val clickListener: CryptoClickListener) :
             notifyDataSetChanged()
         }
 
+    init {
+        setHasStableIds(true);
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CryptoHolder {
         return CryptoHolder.create(parent)
     }

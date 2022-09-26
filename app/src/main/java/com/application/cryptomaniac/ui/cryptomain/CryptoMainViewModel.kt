@@ -17,7 +17,6 @@ class CryptoMainViewModel(val cryptoRepository: CryptoRepository?) : ViewModel()
     val cryptoList: LiveData<List<Crypto?>?> = _cryptoList
     val isUsd = ObservableBoolean(true)
 
-
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -40,13 +39,10 @@ class CryptoMainViewModel(val cryptoRepository: CryptoRepository?) : ViewModel()
                         Log.e("ERROR", "NetworkState error")
                     }
                 }
-
                 _isLoading.value = false
             }
         }
-
     }
-
 
     companion object {
         fun factory(

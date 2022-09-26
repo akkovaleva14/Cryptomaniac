@@ -1,6 +1,7 @@
 package com.application.cryptomaniac.ui.cryptomain
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +14,13 @@ import com.application.cryptomaniac.ui.MainActivity
 import com.application.cryptomaniac.ui.base.BaseFragment
 import com.application.cryptomaniac.ui.cryptodetails.CryptoDetailsFragment
 import com.application.cryptomaniac.ui.cryptomain.cryptoadapter.CryptoAdapter
+import com.application.cryptomaniac.utils.isOnline
 
 class CryptoListFragment : BaseFragment() {
 
     private var binding: FragmentListCryptoBinding? = null
     private var cryptoAdapter: CryptoAdapter? = null
     private lateinit var viewModel: CryptoMainViewModel
-
-    var eurIsSelected: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +40,6 @@ class CryptoListFragment : BaseFragment() {
         super.onResume()
 
         binding?.recyclerView?.adapter = cryptoAdapter
-        viewModel.getCurrentList()
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding?.progressLoader?.isVisible = isLoading
@@ -49,12 +48,24 @@ class CryptoListFragment : BaseFragment() {
         viewModel.cryptoList.observe(
             viewLifecycleOwner
         ) { list ->
-
             list?.let {
                 cryptoAdapter?.data = list
                 cryptoAdapter?.isUsd = viewModel.isUsd.get()
             }
         }
+
+        if (isOnline(requireContext())) {
+            binding?.error?.root?.visibility = View.GONE
+            binding?.recyclerView?.visibility = View.VISIBLE
+            viewModel.getCurrentList()
+            Log.e("isOnline", "ON")
+        } else {
+            binding?.error?.buttonError?.setOnClickListener { viewModel.getCurrentList() }
+            binding?.error?.root?.visibility = View.VISIBLE
+            binding?.recyclerView?.visibility = View.GONE
+            Log.e("isOnline", "OFF")
+        }
+
         changeSelectedState()
 
     }
@@ -69,6 +80,7 @@ class CryptoListFragment : BaseFragment() {
         )
     }
 
+
     fun changeSelectedState() {
         binding?.usdChip?.isSelected = true
         binding?.usdChip?.setChipBackgroundColorResource(R.color.antique_white)
@@ -79,8 +91,19 @@ class CryptoListFragment : BaseFragment() {
             binding?.eurChip?.setChipBackgroundColorResource(R.color.antique_white)
             binding?.usdChip?.setChipBackgroundColorResource(R.color.platinum)
             binding?.eurChip?.isSelected?.let { selected -> viewModel.isUsd.set(!selected) }
-            eurIsSelected = true
-            viewModel.getCurrentList()
+
+            if (isOnline(requireContext())) {
+                binding?.error?.root?.visibility = View.GONE
+                binding?.recyclerView?.visibility = View.VISIBLE
+                viewModel.getCurrentList()
+                Log.e("BUTTON", "Btn clicked. ON")
+            } else {
+                // проблема в setOnClickListener { viewModel.getCurrentList() }
+                binding?.error?.buttonError?.setOnClickListener { viewModel.getCurrentList() }
+                binding?.error?.root?.visibility = View.VISIBLE
+                binding?.recyclerView?.visibility = View.GONE
+                Log.e("BUTTON", "Btn clicked. OFF")
+            }
         }
 
         binding?.usdChip?.setOnClickListener {
@@ -89,10 +112,20 @@ class CryptoListFragment : BaseFragment() {
             binding?.eurChip?.setChipBackgroundColorResource(R.color.platinum)
             binding?.usdChip?.setChipBackgroundColorResource(R.color.antique_white)
             binding?.usdChip?.isSelected?.let { selected -> viewModel.isUsd.set(selected) }
-            eurIsSelected = false
-            viewModel.getCurrentList()
-        }
 
+            if (isOnline(requireContext())) {
+                binding?.error?.root?.visibility = View.GONE
+                binding?.recyclerView?.visibility = View.VISIBLE
+                viewModel.getCurrentList()
+                Log.e("BUTTON", "Btn clicked. ON")
+            } else {
+                binding?.error?.buttonError?.setOnClickListener { viewModel.getCurrentList() }
+                binding?.error?.root?.visibility = View.VISIBLE
+                binding?.recyclerView?.visibility = View.GONE
+                Log.e("BUTTON", "Btn clicked. OFF")
+            }
+
+        }
     }
 
     override fun onDestroyView() {

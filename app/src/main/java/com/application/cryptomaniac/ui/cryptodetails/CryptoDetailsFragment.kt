@@ -10,7 +10,6 @@ import com.application.cryptomaniac.data.model.CryptoDescAndCategories
 import com.application.cryptomaniac.databinding.FragmentDetailsCryptoBinding
 import com.application.cryptomaniac.ui.MainActivity
 import com.application.cryptomaniac.ui.base.BaseFragment
-import com.application.cryptomaniac.ui.cryptomain.CryptoListFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
@@ -65,7 +64,9 @@ class CryptoDetailsFragment : BaseFragment() {
             viewLifecycleOwner
         ) { bindDescAndCategories(it) }
 
-        binding?.buttonArrowBack?.setOnClickListener { replaceFragment(CryptoListFragment()) }
+        binding?.buttonArrowBack?.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
     }
 
     fun bindDescAndCategories(cryptoDescAndCategories: CryptoDescAndCategories?) {
@@ -81,6 +82,11 @@ class CryptoDetailsFragment : BaseFragment() {
         binding?.cryptoNameToolbar?.text = cryptoDescAndCategories?.name
         binding?.cryptoDescription?.text = cryptoDescAndCategories?.description?.get("en")
         binding?.cryptoCategories?.text = cryptoDescAndCategories?.categories?.joinToString()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 
 }

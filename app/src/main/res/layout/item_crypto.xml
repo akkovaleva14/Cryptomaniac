@@ -8,18 +8,21 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_crypto_group"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingVertical="8dp">
 
         <ImageView
             android:id="@+id/crypto_image"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="@id/crypto_symbol"
             app:layout_constraintEnd_toStartOf="@id/crypto_name"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/crypto_name"
             tools:srcCompat="@drawable/bitcoin_logo" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -27,7 +30,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
             android:fontFamily="@font/plusjakartasans_medium"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@id/crypto_symbol"
@@ -50,7 +52,6 @@
             android:id="@+id/crypto_current_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/plusjakartasans_semibold"
             android:textColor="@color/davys_gray"
