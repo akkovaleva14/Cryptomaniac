@@ -74,7 +74,6 @@
             tools:text="+ 4.05%"
             tools:textColor="@color/jungle_green" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

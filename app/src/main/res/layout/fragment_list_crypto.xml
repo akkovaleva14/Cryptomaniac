@@ -1,101 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+<layout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="117dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="117dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/toolbar_text"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="@string/toolbar_text"
-                    android:textColor="@color/black_olive"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@id/chipGroup"
+                    android:background="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroup"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginBottom="13dp"
-                    app:chipSpacingHorizontal="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/toolbar_text"
-                    app:singleLine="true"
-                    app:singleSelection="true">
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/usd_chip"
-                        android:layout_width="89dp"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/toolbar_text"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:fontFamily="@font/roboto_regular"
-                        android:text="@string/usd_chip"
-                        android:textColor="@drawable/text_color_chip_state_list"
-                        android:textSize="14sp"
-                        app:chipBackgroundColor="@drawable/bg_chip_state_list"
-                        app:singleSelection="true"
-                        app:textStartPadding="26dp" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/toolbar_text"
+                        android:textColor="@color/black_olive"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toTopOf="@id/chipGroup"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/eur_chip"
-                        android:layout_width="89dp"
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroup"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:fontFamily="@font/roboto_regular"
-                        android:text="@string/eur_chip"
-                        android:textColor="@drawable/text_color_chip_state_list"
-                        android:textSize="14sp"
-                        app:chipBackgroundColor="@drawable/bg_chip_state_list"
-                        app:textStartPadding="26dp" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginBottom="13dp"
+                        app:chipSpacingHorizontal="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/toolbar_text"
+                        app:singleLine="true"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/usd_chip"
+                            android:layout_width="89dp"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:fontFamily="@font/roboto_regular"
+                            android:text="@string/usd_chip"
+                            android:textAlignment="center"
+                            android:textColor="@drawable/text_color_chip_state_list"
+                            android:textSize="14sp"
+                            app:chipBackgroundColor="@drawable/bg_chip_state_list"
+                            app:singleSelection="true" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/eur_chip"
+                            android:layout_width="89dp"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:fontFamily="@font/roboto_regular"
+                            android:text="@string/eur_chip"
+                            android:textAlignment="center"
+                            android:textColor="@drawable/text_color_chip_state_list"
+                            android:textSize="14sp"
+                            app:chipBackgroundColor="@drawable/bg_chip_state_list" />
 
 
-                </com.google.android.material.chip.ChipGroup>
+                    </com.google.android.material.chip.ChipGroup>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        </androidx.appcompat.widget.Toolbar>
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <View
+            android:id="@+id/view_line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"
-            app:layout_constraintBottom_toBottomOf="@id/toolbar"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/progress_loader"
@@ -105,7 +121,6 @@
             android:indeterminate="true"
             android:indeterminateDrawable="@drawable/bg_progress"
             android:progress="0"
-            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -118,16 +133,24 @@
             android:layout_height="match_parent"
             android:visibility="gone" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="141dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-            tools:listitem="@layout/item_crypto" />
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appBar">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                tools:listitem="@layout/item_crypto" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</FrameLayout>
+</layout>

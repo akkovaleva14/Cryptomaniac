@@ -1,5 +1,6 @@
 package com.application.cryptomaniac.ui.cryptomain
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.application.cryptomaniac.R
 import com.application.cryptomaniac.data.model.Crypto
 import com.application.cryptomaniac.databinding.FragmentListCryptoBinding
@@ -20,7 +22,8 @@ class CryptoListFragment : BaseFragment() {
 
     private var binding: FragmentListCryptoBinding? = null
     private var cryptoAdapter: CryptoAdapter? = null
-    private lateinit var viewModel: CryptoMainViewModel
+    private var viewModel: CryptoMainViewModel? = null
+    private var swipeRefreshLayout: SwipeRefreshLayout? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,38 +39,42 @@ class CryptoListFragment : BaseFragment() {
         return binding!!.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
 
+        binding?.error?.buttonError?.setOnClickListener {
+            binding?.progressLoader?.visibility = View.VISIBLE
+            checkError()
+        }
+
         binding?.recyclerView?.adapter = cryptoAdapter
 
-        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+        cryptoAdapter?.notifyDataSetChanged()
+        binding?.swipeRefreshLayout?.setOnRefreshListener {
+            // on below line we are setting is refreshing to false.
+            swipeRefreshLayout?.isRefreshing = false
+            cryptoAdapter?.notifyDataSetChanged()
+            //   viewModel?.getCurrentList()
+            Log.e("refresh", "refreshed or at least tried")
+        }
+
+        viewModel?.isLoading?.observe(viewLifecycleOwner) { isLoading ->
             binding?.progressLoader?.isVisible = isLoading
         }
 
-        viewModel.cryptoList.observe(
+        viewModel?.cryptoList?.observe(
             viewLifecycleOwner
         ) { list ->
             list?.let {
                 cryptoAdapter?.data = list
-                cryptoAdapter?.isUsd = viewModel.isUsd.get()
+                cryptoAdapter?.isUsd = viewModel?.isUsd!!.get()
             }
         }
 
-        if (isOnline(requireContext())) {
-            binding?.error?.root?.visibility = View.GONE
-            binding?.recyclerView?.visibility = View.VISIBLE
-            viewModel.getCurrentList()
-            Log.e("isOnline", "ON")
-        } else {
-            binding?.error?.buttonError?.setOnClickListener { viewModel.getCurrentList() }
-            binding?.error?.root?.visibility = View.VISIBLE
-            binding?.recyclerView?.visibility = View.GONE
-            Log.e("isOnline", "OFF")
-        }
+        checkError()
 
         changeSelectedState()
-
     }
 
     private fun initAdapter() {
@@ -90,20 +97,8 @@ class CryptoListFragment : BaseFragment() {
             binding?.eurChip?.isSelected = true
             binding?.eurChip?.setChipBackgroundColorResource(R.color.antique_white)
             binding?.usdChip?.setChipBackgroundColorResource(R.color.platinum)
-            binding?.eurChip?.isSelected?.let { selected -> viewModel.isUsd.set(!selected) }
-
-            if (isOnline(requireContext())) {
-                binding?.error?.root?.visibility = View.GONE
-                binding?.recyclerView?.visibility = View.VISIBLE
-                viewModel.getCurrentList()
-                Log.e("BUTTON", "Btn clicked. ON")
-            } else {
-                // проблема в setOnClickListener { viewModel.getCurrentList() }
-                binding?.error?.buttonError?.setOnClickListener { viewModel.getCurrentList() }
-                binding?.error?.root?.visibility = View.VISIBLE
-                binding?.recyclerView?.visibility = View.GONE
-                Log.e("BUTTON", "Btn clicked. OFF")
-            }
+            binding?.eurChip?.isSelected?.let { selected -> viewModel?.isUsd!!.set(!selected) }
+            checkError()
         }
 
         binding?.usdChip?.setOnClickListener {
@@ -111,20 +106,23 @@ class CryptoListFragment : BaseFragment() {
             binding?.eurChip?.isSelected = false
             binding?.eurChip?.setChipBackgroundColorResource(R.color.platinum)
             binding?.usdChip?.setChipBackgroundColorResource(R.color.antique_white)
-            binding?.usdChip?.isSelected?.let { selected -> viewModel.isUsd.set(selected) }
+            binding?.usdChip?.isSelected?.let { selected -> viewModel?.isUsd!!.set(selected) }
+            checkError()
+        }
+    }
 
-            if (isOnline(requireContext())) {
-                binding?.error?.root?.visibility = View.GONE
-                binding?.recyclerView?.visibility = View.VISIBLE
-                viewModel.getCurrentList()
-                Log.e("BUTTON", "Btn clicked. ON")
-            } else {
-                binding?.error?.buttonError?.setOnClickListener { viewModel.getCurrentList() }
-                binding?.error?.root?.visibility = View.VISIBLE
-                binding?.recyclerView?.visibility = View.GONE
-                Log.e("BUTTON", "Btn clicked. OFF")
-            }
+    private fun checkError() {
+        if (isOnline(context)) {
+            binding?.error?.root?.visibility = View.GONE
+            binding?.swipeRefreshLayout?.visibility = View.VISIBLE
+            viewModel?.getCurrentList()
 
+        } else {
+            binding?.error?.root?.visibility = View.VISIBLE
+            binding?.swipeRefreshLayout?.visibility = View.GONE
+            binding?.toolbar?.visibility = View.VISIBLE
+            binding?.viewLine?.visibility = View.VISIBLE
+            binding?.progressLoader?.visibility = View.GONE
         }
     }
 

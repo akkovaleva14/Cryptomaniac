@@ -10,6 +10,7 @@ import com.application.cryptomaniac.data.model.CryptoDescAndCategories
 import com.application.cryptomaniac.databinding.FragmentDetailsCryptoBinding
 import com.application.cryptomaniac.ui.MainActivity
 import com.application.cryptomaniac.ui.base.BaseFragment
+import com.application.cryptomaniac.utils.isOnline
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
@@ -49,12 +50,16 @@ class CryptoDetailsFragment : BaseFragment() {
 
         viewModel.id.set(id)
         binding = FragmentDetailsCryptoBinding.inflate(inflater, container, false)
-        viewModel.getChosenItemDescAndCategories()
         return binding!!.root
     }
 
     override fun onResume() {
         super.onResume()
+
+        binding?.error?.buttonError?.setOnClickListener {
+            binding?.progressLoader?.visibility = View.VISIBLE
+            checkError()
+        }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding?.progressLoader?.isVisible = isLoading
@@ -67,9 +72,11 @@ class CryptoDetailsFragment : BaseFragment() {
         binding?.buttonArrowBack?.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
+
+        checkError()
     }
 
-    fun bindDescAndCategories(cryptoDescAndCategories: CryptoDescAndCategories?) {
+    private fun bindDescAndCategories(cryptoDescAndCategories: CryptoDescAndCategories?) {
 
         binding?.let {
             Glide
@@ -82,6 +89,19 @@ class CryptoDetailsFragment : BaseFragment() {
         binding?.cryptoNameToolbar?.text = cryptoDescAndCategories?.name
         binding?.cryptoDescription?.text = cryptoDescAndCategories?.description?.get("en")
         binding?.cryptoCategories?.text = cryptoDescAndCategories?.categories?.joinToString()
+    }
+
+    private fun checkError() {
+        if (isOnline(context)) {
+            binding?.error?.root?.visibility = View.GONE
+            binding?.nestedScroll?.visibility = View.VISIBLE
+            viewModel.getChosenItemDescAndCategories()
+        } else {
+            binding?.error?.root?.visibility = View.VISIBLE
+            binding?.nestedScroll?.visibility = View.GONE
+            binding?.toolbar?.visibility = View.VISIBLE
+            binding?.progressLoader?.visibility = View.GONE
+        }
     }
 
     override fun onDestroyView() {
